@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import bcrypt from 'bcrypt'
+import bcrypt from "bcryptjs"
 
 const SALT_ROUNDS = 6
 const Schema = mongoose.Schema
@@ -23,7 +23,7 @@ userSchema.set('toJSON', {
 userSchema.pre('save', function (next) {
   const user = this
   if (!user.isModified('password')) return next()
-  bcrypt.hash(user.password, SALT_ROUNDS)
+   bcrypt.hash(user.password, SALT_ROUNDS)
   .then(hash => {
     user.password = hash
     next()
@@ -34,7 +34,7 @@ userSchema.pre('save', function (next) {
 })
 
 userSchema.methods.comparePassword = function (tryPassword, cb) {
-  bcrypt.compare(tryPassword, this.password, cb)
+   bcrypt.compare(tryPassword, this.password, cb)
 }
 
 const User = mongoose.model('User', userSchema)
